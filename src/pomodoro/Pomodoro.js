@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import classNames from "../utils/class-names";
 import useInterval from "../utils/useInterval";
 import TimeContainer from "./TimeContainer";
+import Countdown from "./Countdown";
 
 function Pomodoro() {
   // Timer starts out paused
@@ -10,25 +11,55 @@ function Pomodoro() {
     //Default times in minutes
     focus: 25,
     break: 5,
+    isFocus: true,
+    counter: 0,
   };
 
   const [time, setTime] = useState({ ...initialState });
+  const [hasBegun, setHasBegun] = useState(false);
   const changeTime = (type, value) => {
     setTime({
       ...time,
       [type]: value,
     });
   };
+
+  const begun = () => {
+    if (!hasBegun) {
+      changeTime("counter", time.focus * 60);
+    }
+    setHasBegun(true);
+  };
+
+  const stopTimer = () => {
+    setTime(initialState);
+    setIsTimerRunning(false);
+    setHasBegun(false);
+  };
+  const checkZero = () => {
+    if (time.counter === 0) {
+      const value = time.isFocus ? time.break : time.focus;
+      setTime({
+        ...time,
+        isFocus: !time.isFocus,
+        counter: value,
+      });
+    }
+  };
+
   useInterval(
     () => {
       // ToDo: Implement what should happen when the timer is running
+      checkZero();
+      time.counter--;
     },
     isTimerRunning ? 1000 : null
   );
-
   function playPause() {
+    begun();
     setIsTimerRunning((prevState) => !prevState);
   }
+
   return (
     <div className="pomodoro">
       <TimeContainer time={time} changeTime={changeTime} />
@@ -59,39 +90,14 @@ function Pomodoro() {
               type="button"
               className="btn btn-secondary"
               title="Stop the session"
+              onClick={stopTimer}
             >
               <span className="oi oi-media-stop" />
             </button>
           </div>
         </div>
       </div>
-      <div>
-        {/* TODO: This area should show only when a focus or break session is running or pauses */}
-        <div className="row mb-2">
-          <div className="col">
-            {/* TODO: Update message below to include current session (Focusing or On Break) and total duration */}
-            <h2 data-testid="session-title">Focusing for 25:00 minutes</h2>
-            {/* TODO: Update message below to include time remaining in the current session */}
-            <p className="lead" data-testid="session-sub-title">
-              25:00 remaining
-            </p>
-          </div>
-        </div>
-        <div className="row mb-2">
-          <div className="col">
-            <div className="progress" style={{ height: "20px" }}>
-              <div
-                className="progress-bar"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                aria-valuenow="0" // TODO: Increase aria-valuenow as elapsed time increases
-                style={{ width: "0%" }} // TODO: Increase width % as elapsed time increases
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <Countdown time={time} hasBegun={hasBegun} />
     </div>
   );
 }
