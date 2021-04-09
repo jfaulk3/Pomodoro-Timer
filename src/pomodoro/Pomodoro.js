@@ -18,7 +18,6 @@ function Pomodoro() {
       ...time,
       [type]: value,
     });
-    console.log(time);
   };
   useInterval(
     () => {
