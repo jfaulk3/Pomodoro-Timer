@@ -1,12 +1,13 @@
 import React from "react";
 import { secondsToDuration } from "../utils/duration/index";
 
-function Countdown({ time }) {
+function Countdown({ time, timeRemaining }) {
   if (!time.hasBegun) return null;
   const mode = time.isFocus ? "timeFocus" : "timeBreak";
   const message = time.isFocus ? "Focusing" : "On Break";
   const displayTime = secondsToDuration(time[mode]);
-  const timeLeft = secondsToDuration(time.timeRemaining);
+  const timeLeft = secondsToDuration(timeRemaining);
+  const progress = 100 - (timeRemaining / time[mode]) * 100;
   return (
     <div>
       {/* TODO: This area should show only when a focus or break session is running or pauses */}
@@ -30,8 +31,8 @@ function Countdown({ time }) {
               role="progressbar"
               aria-valuemin="0"
               aria-valuemax="100"
-              aria-valuenow="0" // TODO: Increase aria-valuenow as elapsed time increases
-              style={{ width: "0%" }} // TODO: Increase width % as elapsed time increases
+              aria-valuenow={progress} // TODO: Increase aria-valuenow as elapsed time increases
+              style={{ width: `${progress}%` }} // TODO: Increase width % as elapsed time increases
             />
           </div>
         </div>
