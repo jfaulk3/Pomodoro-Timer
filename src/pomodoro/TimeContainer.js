@@ -6,19 +6,19 @@ function TimeContainer({ time, changeTime }) {
     <div className="row justify-content-around">
       <TimeSet
         type={"Focus"}
-        time={time.focus}
+        time={time}
         changeTime={changeTime}
-        max={60}
-        min={5}
-        skipVal={5}
+        max={3600}
+        min={300}
+        skipVal={300}
       />
       <TimeSet
         type={"Break"}
-        time={time.break}
+        time={time}
         changeTime={changeTime}
-        max={15}
-        min={1}
-        skipVal={1}
+        max={900}
+        min={60}
+        skipVal={60}
       />
     </div>
   );

@@ -1,12 +1,12 @@
 import React from "react";
 import { secondsToDuration, minutesToDuration } from "../utils/duration/index";
 
-function Countdown({ time, hasBegun }) {
-  if (!hasBegun) return null;
-  const mode = time.isFocus ? "focus" : "break";
-  const message = mode === "focus" ? "Focusing" : "On Break";
-  const displayTime = minutesToDuration(time[mode]);
-  const timeLeft = secondsToDuration(time.counter);
+function Countdown({ time }) {
+  if (!time.hasBegun) return null;
+  const mode = time.isFocus ? "timeFocus" : "timeBreak";
+  const message = time.isFocus ? "Focusing" : "On Break";
+  const displayTime = secondsToDuration(time[mode]);
+  const timeLeft = secondsToDuration(time.timeRemaining);
   return (
     <div>
       {/* TODO: This area should show only when a focus or break session is running or pauses */}

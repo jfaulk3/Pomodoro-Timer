@@ -8,41 +8,42 @@ function Pomodoro() {
   // Timer starts out paused
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const initialState = {
-    //Default times in minutes
-    focus: 25,
-    break: 5,
+    //Default times in seconds
+    timeFocus: 1500,
+    timeBreak: 300,
     isFocus: true,
-    counter: 0,
+    timeRemaining: 0,
+    hasBegun: false,
   };
 
   const [time, setTime] = useState({ ...initialState });
-  const [hasBegun, setHasBegun] = useState(false);
   const changeTime = (type, value) => {
+    console.log(type, value);
     setTime({
       ...time,
       [type]: value,
     });
   };
 
-  const begun = () => {
-    if (!hasBegun) {
-      changeTime("counter", time.focus * 60);
+  const beginTimer = () => {
+    if (!time.hasBegun) {
+      changeTime("timeRemaining", time.timeFocus);
     }
-    setHasBegun(true);
+    changeTime("hasBegun", true);
   };
 
   const stopTimer = () => {
     setTime(initialState);
     setIsTimerRunning(false);
-    setHasBegun(false);
   };
+
   const checkZero = () => {
-    if (time.counter === 0) {
-      const value = time.isFocus ? time.break : time.focus;
+    if (time.timeRemaining === 0) {
+      const value = time.isFocus ? time.timeBreak : time.timeFocus;
       setTime({
         ...time,
         isFocus: !time.isFocus,
-        counter: value,
+        timeRemaining: value,
       });
     }
   };
@@ -51,12 +52,13 @@ function Pomodoro() {
     () => {
       // ToDo: Implement what should happen when the timer is running
       checkZero();
-      time.counter--;
+      changeTime(time.timeRemaining, time.timeRemaining - 1);
     },
     isTimerRunning ? 1000 : null
   );
+
   function playPause() {
-    begun();
+    beginTimer();
     setIsTimerRunning((prevState) => !prevState);
   }
 
@@ -97,7 +99,7 @@ function Pomodoro() {
           </div>
         </div>
       </div>
-      <Countdown time={time} hasBegun={hasBegun} />
+      <Countdown time={time} />
     </div>
   );
 }
