@@ -1,5 +1,5 @@
 import React from "react";
-import { secondsToDuration, minutesToDuration } from "../utils/duration/index";
+import { secondsToDuration } from "../utils/duration/index";
 
 function Countdown({ time }) {
   if (!time.hasBegun) return null;
