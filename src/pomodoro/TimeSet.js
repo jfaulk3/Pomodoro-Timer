@@ -1,11 +1,21 @@
 import React from "react";
 import { minutesToDuration } from "../utils/duration/index";
 
-function TimeSet({ type, time, changeTime, max, min, skipVal }) {
+function TimeSet({
+  type,
+  time,
+  changeTime,
+  maxTimeAllowed,
+  minTimeAllowed,
+  adjustDuration,
+}) {
   const mode = type === "Focus" ? "timeFocus" : "timeBreak";
   const displayTime = minutesToDuration(time[mode] / 60);
   const handleClick = (value) => {
-    changeTime(mode, Math.min(Math.max(time[mode] + value, min), max));
+    changeTime(
+      mode,
+      Math.min(Math.max(time[mode] + value, minTimeAllowed), maxTimeAllowed)
+    );
   };
 
   return (
@@ -25,7 +35,7 @@ function TimeSet({ type, time, changeTime, max, min, skipVal }) {
             className="btn btn-secondary"
             data-testid={`decrease-${type.toLowerCase()}`}
             onClick={() => {
-              handleClick(skipVal * -1);
+              handleClick(adjustDuration * -1);
             }}
           >
             <span className="oi oi-minus" />
@@ -36,7 +46,7 @@ function TimeSet({ type, time, changeTime, max, min, skipVal }) {
             className="btn btn-secondary"
             data-testid={`increase-${type.toLowerCase()}`}
             onClick={() => {
-              handleClick(skipVal);
+              handleClick(adjustDuration);
             }}
           >
             <span className="oi oi-plus" />

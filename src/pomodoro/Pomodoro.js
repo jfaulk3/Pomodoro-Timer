@@ -47,7 +47,7 @@ function Pomodoro() {
   );
 
   const playAudio = () => {
-    const alarm = new Audio("/public/alarm/goes-without-saying-608.mp3");
+    const alarm = new Audio("/alarm/goes-without-saying-608.mp3");
     alarm.play();
   };
 

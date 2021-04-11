@@ -8,17 +8,17 @@ function TimeContainer({ time, changeTime }) {
         type={"Focus"}
         time={time}
         changeTime={changeTime}
-        max={3600}
-        min={300}
-        skipVal={300}
+        maxTimeAllowed={3600}
+        minTimeAllowed={300}
+        adjustDuration={300}
       />
       <TimeSet
         type={"Break"}
         time={time}
         changeTime={changeTime}
-        max={900}
-        min={60}
-        skipVal={60}
+        maxTimeAllowed={900}
+        minTimeAllowed={60}
+        adjustDuration={60}
       />
     </div>
   );
